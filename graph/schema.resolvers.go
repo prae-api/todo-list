@@ -19,10 +19,16 @@ func (r *mutationResolver) UpsertTodo(ctx context.Context, input model.TodoInput
 	var todo model.Todo
 	todo.Title = input.Title
 
-	n := len(r.Resolver.TodoStore)
+	// this is how we usually declare the struct, this way we can also assign a variable to the field at the same time
+	// todo := model.Todo{
+	// 	Title: todo.Title,
+	// }
 
+	n := len(r.Resolver.TodoStore)
 	if n == 0 {
 		r.Resolver.TodoStore = make(map[int]model.Todo)
+		// Usually we do not initialize the resolver variables in a resolver
+		// Please refer to my comments in the file server.go
 	}
 
 	//update
@@ -33,6 +39,8 @@ func (r *mutationResolver) UpsertTodo(ctx context.Context, input model.TodoInput
 		}
 		todo.ID = *id
 		r.Resolver.TodoStore[*id] = todo
+		// we can also access the TodoStore by doing
+		// r.TodoStore[*id] = todo
 	} else {
 		//insert
 		//generate new id
@@ -54,7 +62,6 @@ func (r *mutationResolver) DeleteTodo(ctx context.Context, id int) (bool, error)
 	}
 
 	return true, nil
-
 }
 
 // Todo is the resolver for the todo field.
