@@ -6,6 +6,7 @@ package graph
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/prae-api/review-it/graph/model"
@@ -15,6 +16,12 @@ import (
 func (r *mutationResolver) UpsertTodo(ctx context.Context, input model.TodoInput) (*model.Todo, error) {
 	//insert new todo when id is not provided
 	//update todo when id is provided
+
+	// since the incoming input.ID is a pointer, you may need to check whether the value inside the pointer exists
+	// so that the program does not crash when calling a null pointer
+	if input.ID == nil {
+		return nil, errors.New("input and id cannot be nil")
+	}
 	id := input.ID
 	var todo model.Todo
 	todo.Title = input.Title
