@@ -6,6 +6,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/prae-api/todo-api/graph"
 )
@@ -19,8 +20,17 @@ func main() {
 	//}
 	port := defaultPort
 
+//code-review-Jedi
+	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
+		TodoStore: map[int]model.Todo{},
+	}}))
+	// We should initialize the Todo map here, so the every time the resolver gets called, this Todo map is used
+	// This way we don't have to check whether the map already exists inside a resolver, making the program more efficient
+//code-review-Jedi
+
 	r := chi.NewRouter()
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+
 
 	r.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	r.Handle("/query", srv)
