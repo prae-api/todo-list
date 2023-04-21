@@ -1,6 +1,6 @@
 package graph
 
-import "github.com/prae-api/review-it/graph/model"
+import "github.com/prae-api/todo-api/graph/model"
 
 // This file will not be regenerated automatically.
 //

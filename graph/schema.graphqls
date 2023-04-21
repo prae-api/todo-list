@@ -17,4 +17,3 @@ type Query {
   todo(id: Int!): Todo
   todos: [Todo!]!
 }
-
